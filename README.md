@@ -29,7 +29,7 @@ Apply MVVM + Clean Architecture Pattern
 - View is rendered based on the data from ViewModel
 - View that are used across module will be placed in *common* and **MUST NOT** build based on ViewModel.
 
-Examples of a standard view that build based on view-model:
+Examples of a standard view that build based on view model:
 ```kotlin
     @Composable
     fun ContactDetailScreen(
