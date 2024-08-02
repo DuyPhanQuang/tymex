@@ -21,7 +21,7 @@ Apply MVVM + Clean Architecture Pattern
 |:----  Extension Entity   ----|----    Basic Entity   --------:|
 |:-------------------------------------------------------------:|
 ```
-<img src="./mvvm.png" width="600" altText="MVVM" />
+<img src="./mvvm_clean.png" width="600" altText="MVVM + Clean Architecture Pattern" />
 
 ### View
 - This is the major view layer of Android app and is categorized by module (feature or epic).
