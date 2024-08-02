@@ -11,7 +11,7 @@ import java.net.URL
 open class BaseApi(
     private val analytics: DataAnalytics = DataAnalytics.instance
 ) {
-    private fun execute(method: String, path: String, params: JSONObject? = null): JSONObject {
+    private fun execute(method: String, path: String, params: JSONObject? = null): Any {
         analytics.trackApi(path, "GET", params)
         try {
             val url = URL(path)
@@ -26,14 +26,14 @@ open class BaseApi(
             val response = client.newCall(request).execute()
             val json = response.body?.string()
 
-            return JSONTokener(json).nextValue() as JSONObject
+            return JSONTokener(json).nextValue()
         } catch (e: Exception) {
             analytics.trackApiError(path, e)
             throw e
         }
     }
 
-    fun get(path: String): JSONObject {
+    fun get(path: String): Any {
         return execute("GET", path)
     }
 }

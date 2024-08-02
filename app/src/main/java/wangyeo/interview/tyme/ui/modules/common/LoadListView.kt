@@ -14,11 +14,18 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import wangyeo.interview.repository.model.Entity
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.runtime.getValue
 
 @Composable
 fun <T: Entity> LoadListView(
     viewModel: LoadListViewModel<T>,
     modifier: Modifier = Modifier,
+    listState: LazyListState = rememberLazyListState(),
     itemSort: Comparator<T>? = null,
     itemBuilder: @Composable() (item: T) -> Unit
 ) = if ((viewModel.loading && !viewModel.isRefreshing) || viewModel.items == null) {
@@ -29,6 +36,7 @@ fun <T: Entity> LoadListView(
     }
 } else {
     println("Reloaded now")
+
     Surface(Modifier.background(color = Color.Transparent)) {
         val items = viewModel.items
         if (itemSort != null) {
@@ -43,12 +51,22 @@ fun <T: Entity> LoadListView(
             }
         }
         else {
+            val reachedBottom: Boolean by remember { derivedStateOf { listState.reachedBottom() } }
+
+            // load more if scrolled to bottom
+            LaunchedEffect(reachedBottom) {
+                if (reachedBottom && !viewModel.loading) viewModel.loadMore()
+            }
+
+            // pull to refresh
             SwipeRefresh(
                 state = rememberSwipeRefreshState(viewModel.isRefreshing),
                 onRefresh = { viewModel.refresh() },
             ) {
+                // infinity list
                 LazyColumn(
                     modifier = modifier.padding(horizontal = 16.dp),
+                    state = listState,
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.Top,
                 ) {
@@ -59,4 +77,9 @@ fun <T: Entity> LoadListView(
             }
         }
     }
+}
+
+private fun LazyListState.reachedBottom(): Boolean {
+    val lastVisibleItem = this.layoutInfo.visibleItemsInfo.lastOrNull()
+    return lastVisibleItem?.index != 0 && lastVisibleItem?.index == this.layoutInfo.totalItemsCount - 1
 }

@@ -9,8 +9,8 @@ class LoadContactListUsecaseImpl(
     private var contactManager: ContactManager,
     private val contactRepository: ContactRepository
 ): LoadListUsecase<Contact>() {
-    override suspend fun loadItems(): Array<Contact> {
-        val contacts = contactRepository.fetchContacts()
+    override suspend fun loadItems(page: Int): Array<Contact> {
+        val contacts = contactRepository.fetchContacts(page)
         contactManager.updateContactList(contacts = contacts)
         return contacts
     }

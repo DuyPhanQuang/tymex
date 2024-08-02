@@ -20,11 +20,8 @@ fun ContactDetailScreen(
 ) {
     val contact = viewModel.contact
     if (contact is Contact) {
-        val firstName = remember {
-            mutableStateOf(contact.firstName)
-        }
-        val lastName = remember {
-            mutableStateOf(contact.lastName)
+        val name = remember {
+            mutableStateOf(contact.name)
         }
         Column(
             modifier = Modifier
@@ -33,7 +30,7 @@ fun ContactDetailScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(32.dp))
-            Avatar(imageUrl = contact.avatar, sizeInDp = 92F)
+            Avatar(imageUrl = contact.avatarUrl, sizeInDp = 92F)
             Spacer(modifier = Modifier.height(24.dp))
             Row(
                 modifier = Modifier
@@ -42,19 +39,12 @@ fun ContactDetailScreen(
             ) {
                 OutlinedTextField(
                     modifier = Modifier.width(120.dp),
-                    value = firstName.value,
+                    value = name.value,
                     onValueChange = {
-                        firstName.value = it
+                        name.value = it
                     },
-                    label = { Text("First name") })
+                    label = { Text("name") })
                 Spacer(modifier = Modifier.width(32.dp))
-                OutlinedTextField(
-                    modifier = Modifier.width(120.dp),
-                    value = lastName.value,
-                    onValueChange = {
-                        lastName.value = it
-                    },
-                    label = { Text("Last name") })
             }
             Spacer(modifier = Modifier.height(32.dp))
             PrimaryButton(

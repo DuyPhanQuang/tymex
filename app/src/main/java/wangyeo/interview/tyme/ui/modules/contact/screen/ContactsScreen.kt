@@ -36,7 +36,7 @@ fun ContactsScreen(
         ) {
             Image(
                 painter = rememberImagePainter(
-                    data = it.avatar,
+                    data = it.avatarUrl,
                     builder = {
                         crossfade(true)
                         placeholder(R.drawable.ic_launcher_background)
@@ -51,12 +51,12 @@ fun ContactsScreen(
                 modifier = Modifier.padding(8.dp)
             ) {
                 Text(
-                    it.fullName(),
+                    it.name,
                     color = Color.Black,
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold)
                 Text(
-                    it.fullAddress(),
+                    it.htmlUrl,
                     color = Color.Gray,
                     fontSize = 12.sp)
             }

@@ -18,7 +18,7 @@ class ContactManagerImpl: ContactManager {
             return null
         }
 
-        return contacts!!.firstOrNull { it.id == id }
+        return contacts!!.firstOrNull { it.id.toString() == id }
     }
 
     private val updatedContactList = MutableSharedFlow<Array<Contact>>()

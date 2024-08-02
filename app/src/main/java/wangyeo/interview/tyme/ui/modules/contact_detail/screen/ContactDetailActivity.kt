@@ -30,7 +30,7 @@ class ContactDetailActivity : BaseActivity<ContactDetailViewModel>() {
     override fun screenTitle(): String {
         val contact = viewModel.contact
         if (contact is Contact) {
-            return contact.fullName()
+            return contact.name
         }
         return "Contact Detail"
     }

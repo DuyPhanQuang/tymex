@@ -10,13 +10,14 @@ import kotlinx.coroutines.withContext
 import wangyeo.interview.tyme.usecases.LoadListUsecase
 import wangyeo.interview.repository.model.Entity
 
-open class LoadListViewModel<Item: Entity>(
-    private val loadListUsecase: LoadListUsecase<Item>
+open class LoadListViewModel<T: Entity>(
+    private val loadListUsecase: LoadListUsecase<T>
 ): BaseViewModel() {
     var loading by mutableStateOf(false)
-    var items by mutableStateOf<Array<Item>?>(null)
+    var items by mutableStateOf<Array<T>?>(null)
     var isRefreshing by mutableStateOf(false)
     var isFirstLaunch = false
+    var page = 0
 
     fun start() {
         if (isFirstLaunch && !isRefreshing) {
@@ -26,7 +27,7 @@ open class LoadListViewModel<Item: Entity>(
             loading = true
             try {
                 items = withContext(Dispatchers.IO) {
-                    loadListUsecase.loadItems()
+                    loadListUsecase.loadItems(page)
                 }
                 loading = false
                 isFirstLaunch = true
@@ -34,12 +35,12 @@ open class LoadListViewModel<Item: Entity>(
                     isRefreshing = false
                 }
             } catch (exception: Exception) {
-                println("Load list error = $exception")
+                println("started -> Load list error = $exception")
             }
         }
     }
 
-    fun updateItems(updatedItems: Array<Item>) {
+    fun updateItems(updatedItems: Array<T>) {
         if (items != null && items!!.size == updatedItems.size) {
             items = null
         }
@@ -48,6 +49,27 @@ open class LoadListViewModel<Item: Entity>(
 
     fun refresh() {
         isRefreshing = true
+        page = 0
         start()
+    }
+
+    fun loadMore() {
+        if(items.isNullOrEmpty()) {
+            return
+        }
+
+        viewModelScope.launch(Dispatchers.Main) {
+            try {
+                val latestPage = page + 1
+                val newItems = withContext(Dispatchers.IO) {
+                    loadListUsecase.loadItems(latestPage)
+                }
+                items = items!! + newItems
+                page = latestPage
+            } catch (exception: Exception) {
+                println("more loaded -> Load list error = $exception")
+            }
+        }
+
     }
 }
