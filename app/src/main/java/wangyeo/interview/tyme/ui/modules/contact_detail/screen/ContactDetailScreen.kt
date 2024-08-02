@@ -32,21 +32,34 @@ fun ContactDetailScreen(
             Spacer(modifier = Modifier.height(32.dp))
             Avatar(imageUrl = contact.avatarUrl, sizeInDp = 92F)
             Spacer(modifier = Modifier.height(24.dp))
+            OutlinedTextField(
+                modifier = Modifier.width(120.dp),
+                value = name.value,
+                onValueChange = {
+                    name.value = it
+                },
+                label = { Text("name") })
+            Spacer(modifier = Modifier.height(32.dp))
             Row(
-                modifier = Modifier
-                .padding(horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                OutlinedTextField(
-                    modifier = Modifier.width(120.dp),
-                    value = name.value,
-                    onValueChange = {
-                        name.value = it
-                    },
-                    label = { Text("name") })
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text("${contact.followers}+")
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text("Follower")
+                }
                 Spacer(modifier = Modifier.width(32.dp))
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text("${contact.following}+")
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text("Following")
+                }
             }
-            Spacer(modifier = Modifier.height(32.dp))
             PrimaryButton(
                 onClickListener = {}
             )
