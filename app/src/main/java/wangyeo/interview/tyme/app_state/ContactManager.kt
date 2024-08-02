@@ -9,4 +9,6 @@ interface ContactManager {
     fun updateContactList(contacts: Array<Contact>)
 
     fun contactListUpdated(): Flow<Array<Contact>>
+
+    fun updateContact(contact: Contact)
 }

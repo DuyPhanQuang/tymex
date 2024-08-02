@@ -13,5 +13,9 @@ class ContactRepositoryImpl(
     override suspend fun fetchContacts(page: Int): Array<Contact> {
         return contactApi.fetchContacts(page, perPage = kPerPage)
     }
+
+    override suspend fun fetchContactByName(name: String): Contact {
+        return contactApi.fetchContactByName(name)
+    }
 }
 

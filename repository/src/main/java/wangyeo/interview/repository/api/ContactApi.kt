@@ -4,4 +4,6 @@ import wangyeo.interview.repository.model.Contact
 
 interface ContactApi {
     suspend fun fetchContacts(page: Int, perPage: Int): Array<Contact>
+
+    suspend fun fetchContactByName(name: String): Contact
 }

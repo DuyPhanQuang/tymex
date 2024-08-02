@@ -8,12 +8,15 @@ import wangyeo.interview.tyme.ui.modules.common.BaseActivity
 import wangyeo.interview.tyme.ui.modules.common.viewModelFactory
 import wangyeo.interview.tyme.ui.modules.contact_detail.viewmodel.ContactDetailViewModel
 import wangyeo.interview.repository.model.Contact
+import wangyeo.interview.tyme.usecases.Usecase
 
 class ContactDetailActivity : BaseActivity<ContactDetailViewModel>() {
     private lateinit var contactId: String
+    private lateinit var contactName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         contactId = intent.getStringExtra("contactId")!!
+        contactName = intent.getStringExtra("contactName")!!
 
         super.onCreate(savedInstanceState)
     }
@@ -22,7 +25,9 @@ class ContactDetailActivity : BaseActivity<ContactDetailViewModel>() {
         return viewModelFactory {
             ContactDetailViewModel(
                 contactId = contactId,
+                contactName = contactName,
                 contactManager = AppState.instance.contactManager(),
+                contactDetailUsecase = Usecase.contactDetailUsecase()
             )
         }
     }
@@ -42,7 +47,10 @@ class ContactDetailActivity : BaseActivity<ContactDetailViewModel>() {
 
     override fun onStart() {
         super.onStart()
-
+        // load current contact detail get from list contact
         viewModel.loadContact()
+
+        // fetch latest contact detail from repository
+        viewModel.fetchLatestContact()
     }
 }

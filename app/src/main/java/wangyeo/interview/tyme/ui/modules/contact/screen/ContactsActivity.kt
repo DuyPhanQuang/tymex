@@ -10,9 +10,11 @@ import wangyeo.interview.tyme.usecases.Usecase
 
 class ContactsActivity : BaseActivity<ContactsViewModel>() {
     override fun viewModelBuilder(): ViewModelProvider.Factory {
-        return viewModelFactory { ContactsViewModel(
+        return viewModelFactory {
+            ContactsViewModel(
             Usecase.loadContactListUsecase(),
-            AppState.instance.contactManager())
+            AppState.instance.contactManager()
+            )
         }
     }
 

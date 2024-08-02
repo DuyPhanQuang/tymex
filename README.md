@@ -35,7 +35,7 @@ Examples of a standard view that build based on view-model:
     fun ContactDetailScreen(
         viewModel: ContactDetailViewModel
     ) {
-        val contact = viewModel.getContactById() as Contact?
+        val contact = viewModel.contact
         if (contact is Contact) {
             Column(
                 modifier = Modifier

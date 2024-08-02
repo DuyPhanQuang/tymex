@@ -30,7 +30,8 @@ fun ContactsScreen(
         Row(modifier = Modifier
             .clickable {
                 val intent = Intent(context, ContactDetailActivity::class.java)
-                intent.putExtra("contactId", it.id)
+                intent.putExtra("contactId", it.id.toString())
+                intent.putExtra("contactName", it.name)
                 context.startActivity(intent)
             }
         ) {
